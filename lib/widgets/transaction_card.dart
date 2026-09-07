@@ -4,17 +4,18 @@ import 'package:intl/intl.dart';
 import '../models/transaction_model.dart';
 
 class TransactionCard extends StatelessWidget {
-  final TransactionModel transaction;
 
+  final TransactionModel transaction;
+  final VoidCallback? onEdit;
   const TransactionCard({
     super.key,
     required this.transaction,
+    this.onEdit,
   });
 
   @override
   Widget build(BuildContext context) {
-    final bool isIncome =
-        transaction.type == 'income';
+    final bool isIncome = transaction.type == 'income';
 
     return Card(
       margin: const EdgeInsets.only(
@@ -35,9 +36,7 @@ class TransactionCard extends StatelessWidget {
                   : Colors.red.withOpacity(0.12),
 
           child: Icon(
-            isIncome
-                ? Icons.arrow_downward
-                : Icons.arrow_upward,
+            isIncome ? Icons.arrow_downward : Icons.arrow_upward,
 
             color: isIncome
                 ? Colors.green
@@ -56,7 +55,7 @@ class TransactionCard extends StatelessWidget {
           '${transaction.category} • '
           '${DateFormat('dd MMM yyyy').format(transaction.transactionDate)}',
         ),
-
+        /*
         trailing: Text(
           '${isIncome ? '+' : '-'} ₹${transaction.amount.toStringAsFixed(2)}',
 
@@ -69,6 +68,32 @@ class TransactionCard extends StatelessWidget {
             fontWeight: FontWeight.bold,
           ),
         ),
+        */
+        trailing: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              '${isIncome ? '+' : '-'} ₹${transaction.amount.toStringAsFixed(2)}',
+              style: TextStyle(
+                color: isIncome
+                    ? Colors.green
+                    : Colors.red,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+
+            const SizedBox(width: 8),
+
+            IconButton(
+              icon: const Icon(
+                Icons.edit_outlined,
+                size: 20,
+              ),
+              onPressed: onEdit,
+            ),
+          ],
+        ),
+
       ),
     );
   }

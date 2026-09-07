@@ -6,6 +6,7 @@ import '../../widgets/category_summary.dart';
 import '../../widgets/expense_chart.dart';
 import '../../widgets/summary_card.dart';
 import '../../widgets/transaction_card.dart';
+import '../transaction/transaction_form_screen.dart';
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({
@@ -264,17 +265,22 @@ class _DashboardScreenState
                           width: double.infinity,
 
                           child:
-                              ElevatedButton.icon(
-                            onPressed: () {
-                              ScaffoldMessenger.of(
+                          ElevatedButton.icon(
+                            onPressed: () async {
+                              final result = await Navigator.push(
                                 context,
-                              ).showSnackBar(
-                                const SnackBar(
-                                  content: Text(
-                                    'Transaction form will be added in the next step.',
-                                  ),
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      const TransactionFormScreen(),
                                 ),
                               );
+
+                              if (result == true) {
+                                await provider.loadTransactions(
+                                  page: 1,
+                                  limit: 5,
+                                );
+                              }
                             },
 
                             icon:
@@ -352,8 +358,26 @@ class _DashboardScreenState
                               .map(
                             (transaction) {
                               return TransactionCard(
-                                transaction:
-                                    transaction,
+                                transaction: transaction,
+                                onEdit: () async {
+                                  final result = await Navigator.push(
+                                    context,
+
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          TransactionFormScreen(
+                                        transaction: transaction,
+                                      ),
+                                    ),
+                                  );
+
+                                  if (result == true) {
+                                    await provider.loadTransactions(
+                                      page: 1,
+                                      limit: 5,
+                                    );
+                                  }
+                                },
                               );
                             },
                           ),

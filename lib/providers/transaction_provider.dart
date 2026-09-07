@@ -54,6 +54,81 @@ class TransactionProvider extends ChangeNotifier {
 
     notifyListeners();
   }
+
+  Future<bool> addTransaction({
+    required String description,
+    required double amount,
+    required String type,
+    required String category,
+    required String date,
+    }) 
+    async {
+      try 
+      {
+        errorMessage = null;
+
+          final transaction = TransactionModel(
+                                                id: 0,
+                                                description: description,
+                                                amount: amount,
+                                                type: type,
+                                                category: category,
+                                                transactionDate: DateTime.parse(date),
+                                              );
+
+        await _apiService.addTransaction(transaction);
+
+        await loadTransactions(
+          page: 1,
+          limit: 5,
+        );
+
+        return true;
+      
+
+      } 
+      catch (e) 
+      {
+        errorMessage =  e.toString();
+        notifyListeners();
+        return false;
+
+      }
+    }
+
+    Future<bool> updateTransaction({
+      required int id,
+      required String description,
+      required double amount,
+      required String type,
+      required String category,
+      required String date,
+    }) async {
+      try {
+          errorMessage = null;
+    
+          final transaction = TransactionModel(
+                                                id: id,
+                                                description: description,
+                                                amount: amount,
+                                                type: type,
+                                                category: category,
+                                                transactionDate: DateTime.parse(date),
+                                              );
+
+          await _apiService.updateTransaction(transaction);
+
+
+          await loadTransactions(page: 1,limit: 5,);
+          return true;
+      } 
+      catch (e) {
+        errorMessage = e.toString();
+        notifyListeners();
+        return false;
+      }
+    }
+
 }
 /*
 notifyListeners()- The data has changed. Widgets that are listening to me should rebuild.
