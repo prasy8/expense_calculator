@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import 'core/theme/app_theme.dart';
 import 'providers/transaction_provider.dart';
 import 'screens/dashboard/dashboard_screen.dart';
-import 'screens/transactions/transactions_screen.dart';
+import 'screens/transaction/transaction_screen.dart';
 
 void main() {
   runApp(
@@ -49,7 +49,8 @@ class _MainNavigationState extends State<MainNavigation> {
 
   final List<Widget> screens = const [
     DashboardScreen(),
-    TransactionsScreen(),
+    //TransactionsScreen(),
+    TransactionScreen(),
   ];
 
   @override

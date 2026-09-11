@@ -341,16 +341,16 @@ class _DashboardScreenState
                           const Center(
                             child:
                                 Padding(
-                              padding:
-                                  EdgeInsets.all(
-                                30,
-                              ),
+                                  padding:
+                                      EdgeInsets.all(
+                                        30,
+                                      ),
 
-                              child:
-                                  Text(
-                                'No transactions found.',
-                              ),
-                            ),
+                                  child:
+                                      Text(
+                                        'No transactions found.',
+                                      ),
+                                ),
                           )
                         else
                           ...provider
@@ -366,8 +366,8 @@ class _DashboardScreenState
                                     MaterialPageRoute(
                                       builder: (context) =>
                                           TransactionFormScreen(
-                                        transaction: transaction,
-                                      ),
+                                            transaction: transaction,
+                                          ),
                                     ),
                                   );
 
@@ -393,8 +393,7 @@ class _DashboardScreenState
 
                           style: TextStyle(
                             fontSize: 20,
-                            fontWeight:
-                                FontWeight.bold,
+                            fontWeight: FontWeight.bold,
                           ),
                         ),
 
@@ -404,16 +403,12 @@ class _DashboardScreenState
 
                         Card(
                           child: Padding(
-                            padding:
-                                const EdgeInsets
-                                    .all(16),
+                            padding: const EdgeInsets.all(16),
 
                             child:
                                 CategorySummary(
-                              categorySummary:
-                                  provider
-                                      .categorySummary,
-                            ),
+                                  categorySummary: provider.categorySummary,
+                                ),
                           ),
                         ),
 
@@ -428,8 +423,7 @@ class _DashboardScreenState
 
                           style: TextStyle(
                             fontSize: 20,
-                            fontWeight:
-                                FontWeight.bold,
+                            fontWeight: FontWeight.bold,
                           ),
                         ),
 
@@ -439,16 +433,13 @@ class _DashboardScreenState
 
                         Card(
                           child: Padding(
-                            padding:
-                                const EdgeInsets
-                                    .all(16),
+                            padding: const EdgeInsets.all(16),
 
                             child:
                                 ExpenseChart(
-                              categorySummary:
-                                  provider
-                                      .categorySummary,
-                            ),
+                                  categorySummary:
+                                      provider.categorySummary,
+                                ),
                           ),
                         ),
 

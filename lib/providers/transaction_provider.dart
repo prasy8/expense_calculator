@@ -41,12 +41,24 @@ class TransactionProvider extends ChangeNotifier {
         category: category,
       );
 
+      print('API FILTER TYPE: [$type]');
+      print('RESULT TRANSACTIONS: ${result.transactions.length}');
+
+      for (final transaction in result.transactions) {
+        print(
+          'Transaction: ${transaction.description} | '
+          'Type: ${transaction.type} | '
+          'Amount: ${transaction.amount}',
+        );
+      }
+
       transactions    = result.transactions;
       summary         = result.summary;
       pagination      = result.pagination;
       categorySummary = result.categorySummary;
     } 
     catch (error) {
+      print('API ERROR: $error');
       errorMessage = error.toString();
     }
 
