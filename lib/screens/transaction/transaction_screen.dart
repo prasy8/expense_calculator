@@ -39,13 +39,13 @@ class _TransactionScreenState extends State<TransactionScreen> {
   }
 
   void _loadTransactions() {
-
+    /*
     print('----------------------------');
     print('Selected Type: $_selectedType');
     print('Search: ${_searchController.text.trim()}');
     print('Calling API...');
     print('----------------------------');
-    
+    */
     context.read<TransactionProvider>().loadTransactions(
       page: 1,
       limit: 10,

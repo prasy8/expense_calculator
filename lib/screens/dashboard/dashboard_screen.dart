@@ -7,6 +7,7 @@ import '../../widgets/expense_chart.dart';
 import '../../widgets/summary_card.dart';
 import '../../widgets/transaction_card.dart';
 import '../transaction/transaction_form_screen.dart';
+import '../transaction/transaction_screen.dart';
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({
@@ -321,10 +322,15 @@ class _DashboardScreenState
                             ),
 
                             TextButton(
-                              onPressed: () {},
-
-                              child:
-                                  const Text(
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => const TransactionScreen(),
+                                  ),
+                                );
+                              },
+                              child: const Text(
                                 'View All',
                               ),
                             ),

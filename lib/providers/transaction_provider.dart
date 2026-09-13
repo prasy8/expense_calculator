@@ -40,7 +40,7 @@ class TransactionProvider extends ChangeNotifier {
         month: month,
         category: category,
       );
-
+      /*
       print('API FILTER TYPE: [$type]');
       print('RESULT TRANSACTIONS: ${result.transactions.length}');
 
@@ -51,14 +51,14 @@ class TransactionProvider extends ChangeNotifier {
           'Amount: ${transaction.amount}',
         );
       }
-
+      */
       transactions    = result.transactions;
       summary         = result.summary;
       pagination      = result.pagination;
       categorySummary = result.categorySummary;
     } 
     catch (error) {
-      print('API ERROR: $error');
+      //print('API ERROR: $error');
       errorMessage = error.toString();
     }
 
