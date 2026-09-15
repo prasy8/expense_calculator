@@ -34,7 +34,8 @@ class TransactionApiService {
     if (response.statusCode != 200) {
       throw Exception('Failed to load transactions',);
     }
-
+    /*print('RAW API RESPONSE:');
+    print(response.body);*/
     final Map<String, dynamic> json = jsonDecode(response.body);
 
     if (json['success'] != true) {

@@ -19,6 +19,8 @@ class _TransactionScreenState extends State<TransactionScreen> {
   final TextEditingController _searchController = TextEditingController();
 
   String _selectedType = '';
+  String _selectedMonth = '';
+  String _selectedCategory = '';
 
   @override
   void initState() {
@@ -51,6 +53,8 @@ class _TransactionScreenState extends State<TransactionScreen> {
       limit: 10,
       search: _searchController.text.trim(),
       type: _selectedType,
+      month: _selectedMonth,
+      category: _selectedCategory,
     );
   }
 
@@ -181,6 +185,122 @@ class _TransactionScreenState extends State<TransactionScreen> {
                   ) {
                     setState(() {
                       _selectedType = selected.first;
+                      // Clear category when transaction type changes
+                      _selectedCategory = '';
+                    });
+
+                    _loadTransactions();
+                  },
+                ),
+
+                const SizedBox(height: 16),
+
+                DropdownButtonFormField<String>(
+                  initialValue: _selectedMonth,
+                  decoration: InputDecoration(
+                    labelText: 'Month',
+                    prefixIcon: const Icon(Icons.calendar_month),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
+                  items: const [
+                    DropdownMenuItem(
+                      value: '',
+                      child: Text('All Months'),
+                    ),
+                    DropdownMenuItem(
+                      value: '2026-01',
+                      child: Text('January 2026'),
+                    ),
+                    DropdownMenuItem(
+                      value: '2026-02',
+                      child: Text('February 2026'),
+                    ),
+                    DropdownMenuItem(
+                      value: '2026-03',
+                      child: Text('March 2026'),
+                    ),
+                    DropdownMenuItem(
+                      value: '2026-04',
+                      child: Text('April 2026'),
+                    ),
+                    DropdownMenuItem(
+                      value: '2026-05',
+                      child: Text('May 2026'),
+                    ),
+                    DropdownMenuItem(
+                      value: '2026-06',
+                      child: Text('June 2026'),
+                    ),
+                    DropdownMenuItem(
+                      value: '2026-07',
+                      child: Text('July 2026'),
+                    ),
+                    DropdownMenuItem(
+                      value: '2026-08',
+                      child: Text('August 2026'),
+                    ),
+                    DropdownMenuItem(
+                      value: '2026-09',
+                      child: Text('September 2026'),
+                    ),
+                    DropdownMenuItem(
+                      value: '2026-10',
+                      child: Text('October 2026'),
+                    ),
+                    DropdownMenuItem(
+                      value: '2026-11',
+                      child: Text('November 2026'),
+                    ),
+                    DropdownMenuItem(
+                      value: '2026-12',
+                      child: Text('December 2026'),
+                    ),
+                  ],
+                  onChanged: (value) {
+                    setState(() {
+                      _selectedMonth = value ?? '';
+                    });
+
+                    _loadTransactions();
+                  },
+                ),
+
+                const SizedBox(height: 16),
+
+                DropdownButtonFormField<String>(
+                  initialValue: _selectedCategory.isEmpty ? null : _selectedCategory,
+                  decoration: InputDecoration(
+                    labelText: 'Category',
+                    prefixIcon: const Icon(Icons.category),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
+                  items: [
+                    const DropdownMenuItem(
+                      value: '',
+                      child: Text('All Categories'),
+                    ),
+                    /*
+                    ...provider.categorySummary.keys.map(
+                      (category) => DropdownMenuItem(
+                        value: category,
+                        child: Text(category),
+                      ),
+                    ),
+                    */
+                    ...provider.categoryOptions.map(
+                      (category) => DropdownMenuItem<String>(
+                        value: category,
+                        child: Text(category),
+                      ),
+                    ),
+                  ],
+                  onChanged: (value) {
+                    setState(() {
+                      _selectedCategory = value ?? '';
                     });
 
                     _loadTransactions();

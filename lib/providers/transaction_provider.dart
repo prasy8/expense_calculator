@@ -13,6 +13,7 @@ class TransactionProvider extends ChangeNotifier {
   SummaryModel summary = SummaryModel.empty();
   PaginationModel pagination = PaginationModel.empty();
   Map<String, double> categorySummary = {};
+  List<String> categoryOptions = [];
 
   bool isLoading = false;
 
@@ -56,6 +57,8 @@ class TransactionProvider extends ChangeNotifier {
       summary         = result.summary;
       pagination      = result.pagination;
       categorySummary = result.categorySummary;
+      categoryOptions = result.categoryOptions;
+      //print('CATEGORY OPTIONS: $categoryOptions');
     } 
     catch (error) {
       //print('API ERROR: $error');
