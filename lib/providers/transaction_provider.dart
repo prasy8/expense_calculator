@@ -144,6 +144,26 @@ class TransactionProvider extends ChangeNotifier {
       }
     }
 
+    Future<bool> deleteTransaction(int id) async {
+    try {
+      errorMessage = null;
+
+      await _apiService.deleteTransaction(id);
+
+      // Reload the first page after deletion
+      await loadTransactions(
+        page: 1,
+        limit: 10,
+      );
+
+      return true;
+    } 
+    catch (e) {
+      errorMessage = e.toString();
+      notifyListeners();
+      return false;
+    }
+  }
 }
 /*
 notifyListeners()- The data has changed. Widgets that are listening to me should rebuild.

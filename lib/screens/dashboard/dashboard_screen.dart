@@ -9,6 +9,8 @@ import '../../widgets/transaction_card.dart';
 import '../transaction/transaction_form_screen.dart';
 import '../transaction/transaction_screen.dart';
 
+import '../../models/transaction_model.dart';
+
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({
     super.key,
@@ -19,8 +21,7 @@ class DashboardScreen extends StatefulWidget {
       _DashboardScreenState();
 }
 
-class _DashboardScreenState
-    extends State<DashboardScreen> {
+class _DashboardScreenState extends State<DashboardScreen> {
   @override
   void initState() {
     super.initState();
@@ -34,7 +35,55 @@ class _DashboardScreenState
           );
     });
   }
+  Future<void> _confirmDelete(TransactionModel transaction) async {
+    final shouldDelete = await showDialog<bool>(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('Delete Transaction'),
+          content: Text(
+            'Are you sure you want to delete ' '"${transaction.description}"?',
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context, false);
+              },
+              child: const Text('Cancel'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pop(context, true);
+              },
+              child: const Text('Delete'),
+            ),
+          ],
+        );
+      },
+    );
 
+    if (shouldDelete != true) {
+      return;
+    }
+
+    if (!mounted) return;
+
+    final provider = context.read<TransactionProvider>();
+
+    final success = await provider.deleteTransaction(
+      transaction.id!,
+    );
+
+    if (!mounted) return;
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          success ? 'Transaction deleted successfully' : 'Failed to delete transaction',
+        ),
+      ),
+    );
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -385,6 +434,9 @@ class _DashboardScreenState
                                       limit: 5,
                                     );
                                   }
+                                },
+                                onDelete: () {
+                                  _confirmDelete(transaction);
                                 },
                               );
                             },

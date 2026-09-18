@@ -5,6 +5,9 @@ import '../../providers/transaction_provider.dart';
 import '../../widgets/transaction_card.dart';
 import 'transaction_form_screen.dart';
 
+import '../../models/transaction_model.dart';
+
+
 class TransactionScreen extends StatefulWidget {
   const TransactionScreen({
     super.key,
@@ -55,6 +58,56 @@ class _TransactionScreenState extends State<TransactionScreen> {
       type: _selectedType,
       month: _selectedMonth,
       category: _selectedCategory,
+    );
+  }
+
+  Future<void> _confirmDelete(TransactionModel transaction) async {
+    final shouldDelete = await showDialog<bool>(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('Delete Transaction'),
+          content: Text(
+            'Are you sure you want to delete ' '"${transaction.description}"?',
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context, false);
+              },
+              child: const Text('Cancel'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pop(context, true);
+              },
+              child: const Text('Delete'),
+            ),
+          ],
+        );
+      },
+    );
+
+    if (shouldDelete != true) {
+      return;
+    }
+
+    if (!mounted) return;
+
+    final provider = context.read<TransactionProvider>();
+
+    final success = await provider.deleteTransaction(
+      transaction.id!,
+    );
+
+    if (!mounted) return;
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          success ? 'Transaction deleted successfully' : 'Failed to delete transaction',
+        ),
+      ),
     );
   }
 
@@ -408,7 +461,10 @@ class _TransactionScreenState extends State<TransactionScreen> {
                                                                 if (result == true) {
                                                                   _loadTransactions();
                                                                 }
-                                                              },
+                                              },
+                                              onDelete: () {
+                                                _confirmDelete(transaction);
+                                              },
                                             );
                     },
                   ),

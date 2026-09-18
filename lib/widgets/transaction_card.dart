@@ -7,10 +7,13 @@ class TransactionCard extends StatelessWidget {
 
   final TransactionModel transaction;
   final VoidCallback? onEdit;
+  final VoidCallback? onDelete;
+
   const TransactionCard({
     super.key,
     required this.transaction,
     this.onEdit,
+    this.onDelete,
   });
 
   @override
@@ -91,6 +94,10 @@ class TransactionCard extends StatelessWidget {
               ),
               onPressed: onEdit,
             ),
+            IconButton(
+              icon: const Icon(Icons.delete_outline),
+              onPressed: onDelete,
+            )
           ],
         ),
 
