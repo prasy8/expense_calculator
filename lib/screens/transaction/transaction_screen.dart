@@ -110,7 +110,18 @@ class _TransactionScreenState extends State<TransactionScreen> {
       ),
     );
   }
+  void _loadPage(int page) {
+    final provider = context.read<TransactionProvider>();
 
+    provider.loadTransactions(
+      page: page,
+      limit: 10,
+      search: _searchController.text.trim(),
+      type: _selectedType,
+      month: _selectedMonth,
+      category: _selectedCategory,
+    );
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -438,38 +449,88 @@ class _TransactionScreenState extends State<TransactionScreen> {
                 // =========================
 
                 else
+                  ...[
+                      ...provider.transactions.map(
+                        (transaction) {
 
-                  ...provider.transactions.map(
-                    (transaction) {
+                          return TransactionCard(
+                                                  transaction: transaction,
 
-                      return TransactionCard(
-                                              transaction: transaction,
+                                                  onEdit: () async {
 
-                                              onEdit: () async {
+                                                                    final result = await Navigator.push(
+                                                                                                    context,
+                                                                                                    MaterialPageRoute(
+                                                                                                      builder: (context) =>
+                                                                                                          TransactionFormScreen(
+                                                                                                        transaction:
+                                                                                                            transaction,
+                                                                                                      ),
+                                                                                                    ),
+                                                                                                  );
 
-                                                                final result = await Navigator.push(
-                                                                                                context,
-                                                                                                MaterialPageRoute(
-                                                                                                  builder: (context) =>
-                                                                                                      TransactionFormScreen(
-                                                                                                    transaction:
-                                                                                                        transaction,
-                                                                                                  ),
-                                                                                                ),
-                                                                                              );
+                                                                    if (result == true) {
+                                                                      _loadTransactions();
+                                                                    }
+                                                  },
+                                                  onDelete: () {
+                                                    _confirmDelete(transaction);
+                                                  },
+                                                );
+                        },
+                      ),
+                      // =========================
+                      // PAGINATION
+                      // =========================
 
-                                                                if (result == true) {
-                                                                  _loadTransactions();
-                                                                }
-                                              },
-                                              onDelete: () {
-                                                _confirmDelete(transaction);
-                                              },
-                                            );
-                    },
-                  ),
+                      if (provider.pagination.totalPages > 0) ...[
+                        const SizedBox(height: 16),
+
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            IconButton(
+                              tooltip: 'Previous page',
+                              onPressed: provider.pagination.currentPage > 1
+                                  ? () {
+                                      _loadPage(
+                                        provider.pagination.currentPage - 1,
+                                      );
+                                    }
+                                  : null,
+                              icon: const Icon(Icons.chevron_left),
+                            ),
+
+                            Text(
+                              'Page ${provider.pagination.currentPage} '
+                              'of ${provider.pagination.totalPages}',
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+
+                            IconButton(
+                              tooltip: 'Next page',
+                              onPressed: provider.pagination.currentPage <
+                                      provider.pagination.totalPages
+                                  ? () {
+                                      _loadPage(
+                                        provider.pagination.currentPage + 1,
+                                      );
+                                    }
+                                  : null,
+                              icon: const Icon(Icons.chevron_right),
+                            ),
+                          ],
+                        ),
+                      ],
+                  ],
+                
               ],
             ),
+            
+            
+
           );
         },
       ),
