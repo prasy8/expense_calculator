@@ -480,6 +480,16 @@ class _TransactionScreenState extends State<TransactionScreen> {
                         },
                       ),
                       // =========================
+                      // Loading indicator
+                      // =========================
+                      if (provider.isLoading)
+                      const Padding(
+                        padding: EdgeInsets.symmetric(vertical: 12),
+                        child: Center(
+                          child: CircularProgressIndicator(),
+                        ),
+                      ),
+                      // =========================
                       // PAGINATION
                       // =========================
 
@@ -523,6 +533,20 @@ class _TransactionScreenState extends State<TransactionScreen> {
                             ),
                           ],
                         ),
+
+                        const SizedBox(height: 8),
+
+                        Text(
+                          'Showing ${provider.pagination.from}–'
+                          '${provider.pagination.to} of '
+                          '${provider.pagination.totalRecords} transactions',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            color: Colors.grey.shade600,
+                            fontSize: 13,
+                          ),
+                        ),
+
                       ],
                   ],
                 
