@@ -71,7 +71,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
     final provider = context.read<TransactionProvider>();
 
     final success = await provider.deleteTransaction(
-      transaction.id!,
+      id: transaction.id!,
     );
 
     if (!mounted) return;

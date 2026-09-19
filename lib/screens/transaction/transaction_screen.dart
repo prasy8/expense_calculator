@@ -128,6 +128,57 @@ class _TransactionScreenState extends State<TransactionScreen> {
       category: _selectedCategory,
     );
   }
+
+  Widget _summaryCard({
+    required String title,
+    required double amount,
+    required IconData icon,
+    required Color iconColor,
+  }) {
+    return SizedBox(
+      width: 160,
+      child: Card(
+        elevation: 2,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(14),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Icon(
+                icon,
+                color: iconColor,
+                size: 28,
+              ),
+
+              const SizedBox(height: 10),
+
+              Text(
+                title,
+                style: TextStyle(
+                  color: Colors.grey.shade600,
+                  fontSize: 13,
+                ),
+              ),
+
+              const SizedBox(height: 5),
+
+              Text(
+                '₹${amount.toStringAsFixed(2)}',
+                style: const TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -190,7 +241,39 @@ class _TransactionScreenState extends State<TransactionScreen> {
                 ),
 
                 const SizedBox(height: 20),
+                
+                // =========================
+                // SUMMARY CARDS
+                // =========================
 
+                Wrap(
+                  spacing: 12,
+                  runSpacing: 12,
+                  children: [
+                    _summaryCard(
+                      title: 'Income',
+                      amount: provider.summary.income,
+                      icon: Icons.arrow_downward,
+                      iconColor: Colors.green,
+                    ),
+
+                    _summaryCard(
+                      title: 'Expenses',
+                      amount: provider.summary.expense,
+                      icon: Icons.arrow_upward,
+                      iconColor: Colors.red,
+                    ),
+
+                    _summaryCard(
+                      title: 'Balance',
+                      amount: provider.summary.balance,
+                      icon: Icons.account_balance_wallet,
+                      iconColor: Colors.blue,
+                    ),
+                  ],
+                ),
+
+                const SizedBox(height: 20),
                 // =========================
                 // SEARCH
                 // =========================
@@ -331,6 +414,8 @@ class _TransactionScreenState extends State<TransactionScreen> {
                   onChanged: (value) {
                     setState(() {
                       _selectedMonth = value ?? '';
+                      // Clear category because available categories may change
+                      _selectedCategory = '';
                     });
 
                     _loadTransactions();
@@ -340,7 +425,7 @@ class _TransactionScreenState extends State<TransactionScreen> {
                 const SizedBox(height: 16),
 
                 DropdownButtonFormField<String>(
-                  initialValue: _selectedCategory.isEmpty ? null : _selectedCategory,
+                  initialValue: provider.categoryOptions.contains(_selectedCategory) ? _selectedCategory : null,
                   decoration: InputDecoration(
                     labelText: 'Category',
                     prefixIcon: const Icon(Icons.category),
