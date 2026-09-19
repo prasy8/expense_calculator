@@ -97,7 +97,13 @@ class _TransactionScreenState extends State<TransactionScreen> {
     final provider = context.read<TransactionProvider>();
 
     final success = await provider.deleteTransaction(
-      transaction.id!,
+      id: transaction.id!,
+      page: provider.pagination.currentPage,
+      limit: 10,
+      search: _searchController.text.trim(),
+      type: _selectedType,
+      month: _selectedMonth,
+      category: _selectedCategory,
     );
 
     if (!mounted) return;

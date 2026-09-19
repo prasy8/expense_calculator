@@ -144,16 +144,28 @@ class TransactionProvider extends ChangeNotifier {
       }
     }
 
-    Future<bool> deleteTransaction(int id) async {
+    Future<bool> deleteTransaction({
+                                    required int id,
+                                    int page = 1,
+                                    int limit = 10,
+                                    String search = '',
+                                    String type = '',
+                                    String month = '',
+                                    String category = '',
+                                  }) async {
     try {
       errorMessage = null;
 
       await _apiService.deleteTransaction(id);
 
-      // Reload the first page after deletion
+      // preserve filters  after deletion
       await loadTransactions(
-        page: 1,
-        limit: 10,
+          page: page,
+          limit: limit,
+          search: search,
+          type: type,
+          month: month,
+          category: category,
       );
 
       return true;
