@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../core/constants/app_constants.dart';
 import '../models/transaction_model.dart';
@@ -8,6 +9,18 @@ import '../models/transaction_response_model.dart';
 
 class TransactionApiService {
   final String endpoint = AppConstants.transactionsEndpoint;
+
+  Future<Map<String, String>> _getAuthHeaders() async {
+      final prefs = await SharedPreferences.getInstance();
+      final token = prefs.getString('expense_token');
+      final headers = <String, String>{'Content-Type': 'application/json',};
+
+      if (token != null && token.isNotEmpty) {
+          headers['Authorization'] = 'Bearer $token';
+      }
+
+      return headers;
+  }
 
   Future<TransactionResponseModel> getTransactions({
       int page = 1,
@@ -29,7 +42,7 @@ class TransactionApiService {
       },
     );
 
-    final response = await http.get(uri);
+    final response = await http.get(uri, headers: await _getAuthHeaders(),);
     //print(response.body);
     if (response.statusCode != 200) {
       throw Exception('Failed to load transactions',);
@@ -52,9 +65,7 @@ class TransactionApiService {
   async {
     final response = await http.post(
       Uri.parse(endpoint),
-      headers: {
-        'Content-Type': 'application/json',
-      },
+      headers: await _getAuthHeaders(),
       body: jsonEncode({
         'description': transaction.description,
         'amount': transaction.amount,
@@ -83,9 +94,8 @@ class TransactionApiService {
   async {
     final response = await http.put(
       Uri.parse(endpoint),
-      headers: {
-        'Content-Type': 'application/json',
-      },
+      headers: await _getAuthHeaders(),
+      
       body: jsonEncode({
         'id': transaction.id,
         'description': transaction.description,
@@ -113,9 +123,7 @@ class TransactionApiService {
   async {
     final response = await http.delete(
       Uri.parse(endpoint),
-      headers: {
-        'Content-Type': 'application/json',
-      },
+      headers: await _getAuthHeaders(),
       body: jsonEncode({
         'id': id,
       }),

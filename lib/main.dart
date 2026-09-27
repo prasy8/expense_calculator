@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import 'providers/auth_provider.dart';
+
 import 'core/theme/app_theme.dart';
 import 'providers/transaction_provider.dart';
 import 'screens/dashboard/dashboard_screen.dart';
 import 'screens/transaction/transaction_screen.dart';
+import 'screens/auth_gate.dart';
 
 void main() {
   runApp(
@@ -14,12 +17,11 @@ void main() {
 
 class ExpenseManagerApp extends StatelessWidget {
 
-  const ExpenseManagerApp({
-    super.key,
-  });
+  const ExpenseManagerApp({super.key,});
 
   @override
   Widget build(BuildContext context,) {
+    /*
     return ChangeNotifierProvider(
       create: (_) => TransactionProvider(),
 
@@ -29,6 +31,22 @@ class ExpenseManagerApp extends StatelessWidget {
               theme: AppTheme.lightTheme,
               home: const MainNavigation(),
             ),
+    );
+    */
+    return MultiProvider(
+        providers:[
+            ChangeNotifierProvider(create: (_)=>AuthProvider(),),
+            ChangeNotifierProvider(create: (_)=>TransactionProvider(),),
+        ], 
+        child: MaterialApp(
+            debugShowCheckedModeBanner: false,
+            title: 'Expense Calculator',
+            theme: ThemeData(
+                colorScheme: ColorScheme.fromSeed(seedColor: Colors.indigo,),
+                useMaterial3: true,
+            ),
+            home: const AuthGate(),
+        ),
     );
   }
 }

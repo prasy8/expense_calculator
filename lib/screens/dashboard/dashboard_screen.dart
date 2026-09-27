@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../providers/auth_provider.dart';
+import '../login_screen.dart';
+
 import '../../providers/transaction_provider.dart';
 import '../../widgets/category_summary.dart';
 import '../../widgets/expense_chart.dart';
@@ -166,24 +169,78 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   floating: true,
                   pinned: true,
 
-                  title: const Text(
-                    'Expense Manager',
-                  ),
+                  title: const Text('Expense Manager',),
 
                   actions: [
+                    // =========================
+                    // REFRESH
+                    // =========================
                     IconButton(
-                      icon:
-                          const Icon(
-                        Icons.refresh,
+                      tooltip: 'Refresh',
+                      icon: const Icon(Icons.refresh,
                       ),
 
                       onPressed: () {
-                        provider
-                            .loadTransactions(
+                        provider.loadTransactions(
                           page: 1,
                           limit: 5,
                         );
                       },
+                    ),
+                    // =========================
+                    // LOGOUT
+                    // =========================
+                    IconButton(
+                      tooltip: 'Logout',
+                      icon: const Icon(
+                        Icons.logout,
+                      ),
+                      onPressed: () async {
+  final shouldLogout = await showDialog<bool>(
+    context: context,
+    builder: (dialogContext) {
+      return AlertDialog(
+        title: const Text('Logout'),
+        content: const Text(
+          'Are you sure you want to logout?',
+        ),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.pop(dialogContext, false);
+            },
+            child: const Text('Cancel'),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.pop(dialogContext, true);
+            },
+            child: const Text('Logout'),
+          ),
+        ],
+      );
+    },
+  );
+
+  if (!mounted) return;
+
+  if (shouldLogout != true) {
+    return;
+  }
+
+  final authProvider = context.read<AuthProvider>();
+
+  await authProvider.logout();
+
+  if (!mounted) return;
+
+  Navigator.of(context).pushAndRemoveUntil(
+    MaterialPageRoute(
+      builder: (_) => const LoginScreen(),
+    ),
+    (route) => false,
+  );
+},
                     ),
                   ],
                 ),
