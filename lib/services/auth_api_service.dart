@@ -14,7 +14,7 @@ class AuthApiService {
       final response = await http.post(
                           Uri.parse(authUrl),
                           headers: {
-                            'Content-Type':'applicaton/json',
+                            'Content-Type':'application/json',
                           },
                           body: jsonEncode({
                             'action': 'register',
@@ -35,7 +35,7 @@ class AuthApiService {
       final response = await http.post(
                           Uri.parse(authUrl),
                           headers: {
-                            'Content-Type':'applicaton/json',
+                            'Content-Type':'application/json',
                           },
                           body: jsonEncode({
                             'action': 'login',
@@ -56,7 +56,7 @@ class AuthApiService {
       final response = await http.post(
                           Uri.parse(authUrl),
                           headers: {
-                            'Content-Type':'applicaton/json',
+                            'Content-Type':'application/json',
                             'Authorization':'Bearer $token',
                           },
                           body: jsonEncode({
@@ -77,7 +77,7 @@ class AuthApiService {
       final response = await http.post(
                           Uri.parse(authUrl),
                           headers: {
-                            'Content-Type':'applicaton/json',
+                            'Content-Type':'application/json',
                             'Authorization':'Bearer $token',
                           },
                           body: jsonEncode({

@@ -169,7 +169,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   floating: true,
                   pinned: true,
 
-                  title: const Text('Expense Manager',),
+                  title: const Text('Expense Trace',),
 
                   actions: [
                     // =========================
@@ -232,19 +232,24 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
   await authProvider.logout();
 
-  if (!mounted) return;
-
-  Navigator.of(context).pushAndRemoveUntil(
-    MaterialPageRoute(
-      builder: (_) => const LoginScreen(),
-    ),
-    (route) => false,
-  );
 },
                     ),
                   ],
                 ),
-
+                
+                SliverToBoxAdapter(
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
+                    child: Text(
+                      'Welcome, ${context.watch<AuthProvider>().user?.name ?? 'User'}',
+                      style: const TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ),
+                
                 // =========================
                 // DASHBOARD CONTENT
                 // =========================
