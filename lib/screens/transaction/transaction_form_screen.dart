@@ -31,7 +31,7 @@ DateTime _selectedDate = DateTime.now();
 bool _isSaving = false;
 
 final List<String> _incomeCategories = ['Salary','Business','Investment','Interest','Gift','Other',];
-final List<String> _expenseCategories = ['Food','Shopping','Transport','Bills','Entertainment','Health','Education','Travel','Rent','Other',];
+final List<String> _expenseCategories = ['Bills','Education','Entertainment','Food','Health','Maintenance','Medical','Rent','Shopping','Transport','Travel','Other',];
 
 List<String> get _categories {
   if (_type == 'income') {

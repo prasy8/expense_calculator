@@ -40,11 +40,11 @@ class TransactionResponseModel {
     final List<dynamic> categoryDataOptions = json['category_options'] is List ? List<dynamic>.from(json['category_options']) : [];
 
     final List<String> categoryOptions = categoryDataOptions.map((item) => item.toString()).where((item) => item.isNotEmpty).toList();
-    
+    /*
     // DEBUG
     print('JSON CATEGORY OPTIONS: ${json['category_options']}');
     print('PARSED CATEGORY OPTIONS: $categoryOptions');
-    /*final List<dynamic> categoryDataOptions = json['category_options'] ?? [];
+    final List<dynamic> categoryDataOptions = json['category_options'] ?? [];
 
     final List<String> categoryOptions = categoryDataOptions.map((item) => item.toString()).toList();
     */

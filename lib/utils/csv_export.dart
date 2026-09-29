@@ -12,7 +12,47 @@ class CsvExport {
     List<TransactionModel> transactions,
   ) async {
 
+     // ==========================================
+    // Calculate Summary
+    // ==========================================
+
+    double totalIncome = 0;
+    double totalExpense = 0;
+
+    for (final transaction in transactions) {
+
+      if (transaction.type == 'income') {
+        totalIncome += transaction.amount;
+      } 
+      else if (transaction.type == 'expense') 
+      {
+        totalExpense += transaction.amount;
+      }
+    }
+
+    final double balance = totalIncome - totalExpense;
+
+
+    // ==========================================
+    // CSV Rows
+    // ==========================================
     final List<List<dynamic>> rows = [];
+
+    // ==========================================
+    // Summary
+    // ==========================================
+
+    rows.add(['Summary','',]);
+    rows.add(['Total Income',totalIncome.toStringAsFixed(2),]);
+    rows.add(['Total Expense',totalExpense.toStringAsFixed(2),]);
+    rows.add(['Balance',balance.toStringAsFixed(2),]);
+
+    // Empty row between summary and transactions
+    rows.add([]);
+
+    // ==========================================
+    // Transaction Header
+    // ==========================================
 
     // CSV Header
     rows.add([
@@ -33,10 +73,7 @@ class CsvExport {
         transaction.amount,
         transaction.type,
         transaction.category,
-        transaction.transactionDate
-            .toIso8601String()
-            .split('T')
-            .first,
+        transaction.transactionDate.toIso8601String().split('T').first,
       ]);
     }
 
@@ -44,8 +81,7 @@ class CsvExport {
     final String csvData = csv.encode(rows);
 
     // Get application directory
-    final directory =
-        await getApplicationDocumentsDirectory();
+    final directory = await getApplicationDocumentsDirectory();
 
     // Create filename
     final now = DateTime.now();
@@ -58,9 +94,7 @@ class CsvExport {
         '${now.hour.toString().padLeft(2, '0')}-'
         '${now.minute.toString().padLeft(2, '0')}.csv';
 
-    final file = File(
-      '${directory.path}/$fileName',
-    );
+    final file = File('${directory.path}/$fileName',);
 
     // Write CSV
     await file.writeAsString(csvData);
