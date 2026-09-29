@@ -6,7 +6,8 @@ import '../../widgets/transaction_card.dart';
 import 'transaction_form_screen.dart';
 
 import '../../models/transaction_model.dart';
-
+import '../../services/transaction_api_service.dart';
+import '../../utils/csv_export.dart';
 
 class TransactionScreen extends StatefulWidget {
   const TransactionScreen({
@@ -129,6 +130,66 @@ class _TransactionScreenState extends State<TransactionScreen> {
     );
   }
 
+  Future<void> _exportCsv() async {
+    //print('exort csv function called');
+    
+    try {
+      // Show loading message
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Preparing CSV...'),
+        ),
+      );
+
+      final apiService = TransactionApiService();
+
+      // Get ALL transactions using current filters
+      final transactions = await apiService.getAllTransactionsForExport(
+        search: _searchController.text.trim(),
+        type: _selectedType,
+        month: _selectedMonth,
+        category: _selectedCategory,
+      );
+
+      if (!mounted) return;
+
+      if (transactions.isEmpty) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('No transactions found to export.'),
+          ),
+        );
+        return;
+      }
+
+      // Create and share CSV
+      await CsvExport.exportTransactions(
+        transactions,
+      );
+
+      if (!mounted) return;
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            '${transactions.length} transactions exported successfully.',
+          ),
+        ),
+      );
+    } catch (e) {
+      if (!mounted) return;
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            'CSV export failed: $e',
+          ),
+        ),
+      );
+    }
+    // hide loading
+  }
+
   Widget _summaryCard({
     required String title,
     required double amount,
@@ -184,6 +245,12 @@ class _TransactionScreenState extends State<TransactionScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Transactions'),
+        actions: [
+                    IconButton(
+                      tooltip: 'Export CSV', 
+                      onPressed: _exportCsv, 
+                      icon: const Icon(Icons.download))
+                ],
       ),
 
       floatingActionButton: FloatingActionButton.extended(

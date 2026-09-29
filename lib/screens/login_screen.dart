@@ -77,16 +77,23 @@ class _LoginScreenState extends State<LoginScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    const Icon(
+                    /*const Icon(
                       Icons.account_balance_wallet_rounded,
                       size: 70,
                       color: Colors.indigo,
+                    ),
+                    */
+                    Image.asset(
+                      'assets/images/app_icon.png',
+                      width: 70,
+                      height: 70,
+                      fit: BoxFit.contain,
                     ),
 
                     const SizedBox(height: 20),
 
                     const Text(
-                      'Welcome Back',
+                      'Spend Trace',
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontSize: 30,

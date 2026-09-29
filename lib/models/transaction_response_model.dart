@@ -32,9 +32,7 @@ class TransactionResponseModel {
     final Map<String, dynamic> categoryData = Map<String, dynamic>.from(json['category_summary'] ?? {},);
     final Map<String, double> categorySummary = {};
 
-    categoryData.forEach((key, value) {
-      categorySummary[key] = double.tryParse(value.toString()) ?? 0.0;
-    });
+    categoryData.forEach((key, value) {categorySummary[key] = double.tryParse(value.toString()) ?? 0.0;});
     // ========================================
     // Category Options
     // Used by Category Dropdown
@@ -42,10 +40,10 @@ class TransactionResponseModel {
     final List<dynamic> categoryDataOptions = json['category_options'] is List ? List<dynamic>.from(json['category_options']) : [];
 
     final List<String> categoryOptions = categoryDataOptions.map((item) => item.toString()).where((item) => item.isNotEmpty).toList();
-    /*
+    
     // DEBUG
     print('JSON CATEGORY OPTIONS: ${json['category_options']}');
-    print('PARSED CATEGORY OPTIONS: $categoryOptions');*/
+    print('PARSED CATEGORY OPTIONS: $categoryOptions');
     /*final List<dynamic> categoryDataOptions = json['category_options'] ?? [];
 
     final List<String> categoryOptions = categoryDataOptions.map((item) => item.toString()).toList();

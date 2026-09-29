@@ -6,69 +6,38 @@ import '../../models/transaction_model.dart';
 import '../../providers/transaction_provider.dart';
 
 class TransactionFormScreen extends StatefulWidget {
-final TransactionModel? transaction;
+    final TransactionModel? transaction;
+    const TransactionFormScreen({
+        super.key,
+        this.transaction,
+    });
 
-const TransactionFormScreen({
-super.key,
-this.transaction,
-});
+    bool get isEditing => transaction != null;
 
-bool get isEditing => transaction != null;
-
-@override
-State<TransactionFormScreen> createState() =>
-_TransactionFormScreenState();
+    @override
+    State<TransactionFormScreen> createState() => _TransactionFormScreenState();
 }
 
-class _TransactionFormScreenState
-extends State<TransactionFormScreen> {
+class _TransactionFormScreenState extends State<TransactionFormScreen> {
 
 final _formKey = GlobalKey<FormState>();
 
-final TextEditingController _descriptionController =
-TextEditingController();
-
-final TextEditingController _amountController =
-TextEditingController();
+final TextEditingController _descriptionController  = TextEditingController();
+final TextEditingController _amountController       = TextEditingController();
 
 String _type = 'expense';
-
 String _category = '';
-
 DateTime _selectedDate = DateTime.now();
-
 bool _isSaving = false;
 
-final List<String> _incomeCategories = [
-'Salary',
-'Business',
-'Investment',
-'Interest',
-'Gift',
-'Other',
-];
-
-final List<String> _expenseCategories = [
-'Food',
-'Shopping',
-'Transport',
-'Bills',
-'Entertainment',
-'Health',
-'Education',
-'Travel',
-'Rent',
-'Other',
-];
+final List<String> _incomeCategories = ['Salary','Business','Investment','Interest','Gift','Other',];
+final List<String> _expenseCategories = ['Food','Shopping','Transport','Bills','Entertainment','Health','Education','Travel','Rent','Other',];
 
 List<String> get _categories {
-if (_type == 'income') {
-return _incomeCategories;
-}
-
-
-return _expenseCategories;
-
+  if (_type == 'income') {
+      return _incomeCategories;
+  }
+  return _expenseCategories;
 }
 
 @override
@@ -79,18 +48,11 @@ super.initState();
 if (widget.transaction != null) {
   final transaction = widget.transaction!;
 
-  _descriptionController.text =
-      transaction.description;
-
-  _amountController.text =
-      transaction.amount.toStringAsFixed(2);
-
-  _type = transaction.type;
-
-  _category = transaction.category;
-
-  _selectedDate =
-      transaction.transactionDate;
+  _descriptionController.text = transaction.description;
+  _amountController.text      = transaction.amount.toStringAsFixed(2);
+  _type         = transaction.type;
+  _category     = transaction.category;
+  _selectedDate = transaction.transactionDate;
 
   if (!_categories.contains(_category)) {
     _category = '';
@@ -102,26 +64,18 @@ if (widget.transaction != null) {
 
 @override
 void dispose() {
-_descriptionController.dispose();
-_amountController.dispose();
-
-
-super.dispose();
-
-
+  _descriptionController.dispose();
+  _amountController.dispose();
+  super.dispose();
 }
 
 Future<void> _selectDate() async {
 final DateTime? picked =
 await showDatePicker(
-context: context,
-
-
-  initialDate: _selectedDate,
-
-  firstDate: DateTime(2000),
-
-  lastDate: DateTime(2100),
+    context: context,
+    initialDate: _selectedDate,
+    firstDate: DateTime(2000),
+    lastDate: DateTime(2100),
 );
 
 if (picked != null) {
@@ -134,27 +88,23 @@ if (picked != null) {
 }
 
 Future<void> _saveTransaction() async {
-if (!_formKey.currentState!.validate()) {
-return;
-}
+  if (!_formKey.currentState!.validate()) {
+    return;
+  }
 
-
-if (_category.isEmpty) {
-  ScaffoldMessenger.of(context).showSnackBar(
-    const SnackBar(
-      content: Text(
-        'Please select a category.',
+  if (_category.isEmpty) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text(
+          'Please select a category.',
+        ),
       ),
-    ),
-  );
+    );
 
-  return;
-}
+    return;
+  }
 
-final amount =
-    double.tryParse(
-  _amountController.text.trim(),
-);
+final amount = double.tryParse(_amountController.text.trim(),);
 
 if (amount == null || amount <= 0) {
   ScaffoldMessenger.of(context).showSnackBar(
@@ -172,12 +122,8 @@ setState(() {
   _isSaving = true;
 });
 
-final provider =
-    context.read<TransactionProvider>();
-
-final date =
-    DateFormat('yyyy-MM-dd')
-        .format(_selectedDate);
+final provider = context.read<TransactionProvider>();
+final date = DateFormat('yyyy-MM-dd').format(_selectedDate);
 
 bool success;
 
@@ -420,11 +366,7 @@ return Scaffold(
             // =========================
 
             DropdownButtonFormField<String>(
-              initialValue:
-                  _category.isEmpty
-                      ? null
-                      : _category,
-
+              initialValue: _category.isEmpty ? null : _category,
               decoration:
                   const InputDecoration(
                 labelText: 'Category',

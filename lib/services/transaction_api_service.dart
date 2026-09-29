@@ -58,6 +58,48 @@ class TransactionApiService {
     return TransactionResponseModel.fromJson(json);
   }
 
+  // ========================================
+  // Get ALL filtered transactions for CSV
+  // ========================================
+  Future<List<TransactionModel>> getAllTransactionsForExport({
+      String search = '',
+      String type = '',
+      String month = '',
+      String category = '',
+    }) 
+  async {
+      final List<TransactionModel> allTransactions = [];
+      int page = 1;
+      const int limit = 50;
+      while (true) {
+
+        final response = await getTransactions(
+          page: page,
+          limit: limit,
+          search: search,
+          type: type,
+          month: month,
+          category: category,
+        );
+
+        // Add transactions from current page
+        allTransactions.addAll(response.transactions);
+
+        // Get total pages
+        final totalPages = response.pagination.totalPages;
+
+        // Stop when last page is reached
+        if (page >= totalPages) {
+          break;
+        }
+
+        page++;
+      }
+
+      return allTransactions;
+  }
+  
+
   //POST-added this method
   Future<int> addTransaction(
     TransactionModel transaction,

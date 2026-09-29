@@ -11,10 +11,14 @@ class TransactionsScreen
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'Transactions',
-        ),
-      ),
+                title: const Text('Transactions',),
+                actions: [
+                    IconButton(
+                      tooltip: 'Export CSV', 
+                      onPressed: () {print('Button pressed!');}, 
+                      icon: const Icon(Icons.download))
+                ],
+              ),
 
       body: const Center(
         child: Text(

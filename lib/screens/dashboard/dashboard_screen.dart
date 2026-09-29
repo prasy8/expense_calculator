@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../providers/auth_provider.dart';
-import '../login_screen.dart';
 
 import '../../providers/transaction_provider.dart';
 import '../../widgets/category_summary.dart';
@@ -169,7 +168,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   floating: true,
                   pinned: true,
 
-                  title: const Text('Expense Trace',),
+                  title: const Text('Spend Trace',),
 
                   actions: [
                     // =========================
