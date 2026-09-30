@@ -23,8 +23,8 @@ class AuthApiService {
                             'password': password,
                           }),
                        );
-      print('STATUS: ${response.statusCode}');
-      print('BODY: ${response.body}');
+      //print('STATUS: ${response.statusCode}');
+      //print('BODY: ${response.body}');
       
       return _handleResponse(response);
   }

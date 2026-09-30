@@ -129,6 +129,36 @@ class _TransactionScreenState extends State<TransactionScreen> {
       category: _selectedCategory,
     );
   }
+  
+  List<DropdownMenuItem<String>> _buildMonthItems() {
+      final now = DateTime.now();
+
+      final items = <DropdownMenuItem<String>>[
+        const DropdownMenuItem(
+          value: '',
+          child: Text('All Months'),
+        ),
+      ];
+
+      for (int i = 0; i < 12; i++) {
+        final date = DateTime(now.year,now.month - i,);
+        final monthValue = '${date.year}-${date.month.toString().padLeft(2, '0')}';
+        final monthName = _monthName(date.month);
+
+        items.add(
+          DropdownMenuItem(
+            value: monthValue,
+            child: Text('$monthName ${date.year}'),
+          ),
+        );
+      }
+
+      return items;
+  }
+  String _monthName(int month) {
+      const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December',];
+      return months[month - 1];
+  }
 
   Future<void> _exportCsv() async {
     //print('exort csv function called');
@@ -424,60 +454,7 @@ class _TransactionScreenState extends State<TransactionScreen> {
                       borderRadius: BorderRadius.circular(12),
                     ),
                   ),
-                  items: const [
-                    DropdownMenuItem(
-                      value: '',
-                      child: Text('All Months'),
-                    ),
-                    DropdownMenuItem(
-                      value: '2026-01',
-                      child: Text('January 2026'),
-                    ),
-                    DropdownMenuItem(
-                      value: '2026-02',
-                      child: Text('February 2026'),
-                    ),
-                    DropdownMenuItem(
-                      value: '2026-03',
-                      child: Text('March 2026'),
-                    ),
-                    DropdownMenuItem(
-                      value: '2026-04',
-                      child: Text('April 2026'),
-                    ),
-                    DropdownMenuItem(
-                      value: '2026-05',
-                      child: Text('May 2026'),
-                    ),
-                    DropdownMenuItem(
-                      value: '2026-06',
-                      child: Text('June 2026'),
-                    ),
-                    DropdownMenuItem(
-                      value: '2026-07',
-                      child: Text('July 2026'),
-                    ),
-                    DropdownMenuItem(
-                      value: '2026-08',
-                      child: Text('August 2026'),
-                    ),
-                    DropdownMenuItem(
-                      value: '2026-09',
-                      child: Text('September 2026'),
-                    ),
-                    DropdownMenuItem(
-                      value: '2026-10',
-                      child: Text('October 2026'),
-                    ),
-                    DropdownMenuItem(
-                      value: '2026-11',
-                      child: Text('November 2026'),
-                    ),
-                    DropdownMenuItem(
-                      value: '2026-12',
-                      child: Text('December 2026'),
-                    ),
-                  ],
+                  items:_buildMonthItems(),
                   onChanged: (value) {
                     setState(() {
                       _selectedMonth = value ?? '';

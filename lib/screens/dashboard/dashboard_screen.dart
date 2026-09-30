@@ -17,10 +17,9 @@ class DashboardScreen extends StatefulWidget {
   const DashboardScreen({
     super.key,
   });
-
+  
   @override
-  State<DashboardScreen> createState() =>
-      _DashboardScreenState();
+  State<DashboardScreen> createState() => _DashboardScreenState();
 }
 
 class _DashboardScreenState extends State<DashboardScreen> {
@@ -29,14 +28,15 @@ class _DashboardScreenState extends State<DashboardScreen> {
     super.initState();
 
     Future.microtask(() {
-      context
-          .read<TransactionProvider>()
-          .loadTransactions(
+      context.read<TransactionProvider>().loadTransactions(
             page: 1,
             limit: 5,
           );
     });
+
   }
+  
+
   Future<void> _confirmDelete(TransactionModel transaction) async {
     final shouldDelete = await showDialog<bool>(
       context: context,
@@ -96,16 +96,14 @@ class _DashboardScreenState extends State<DashboardScreen> {
               provider,
               child,
             ) {
-          if (provider.isLoading &&
-              provider.transactions.isEmpty) {
+          if (provider.isLoading && provider.transactions.isEmpty) {
             return const Center(
               child:
                   CircularProgressIndicator(),
             );
           }
 
-          if (provider.errorMessage != null &&
-              provider.transactions.isEmpty) {
+          if (provider.errorMessage != null && provider.transactions.isEmpty) {
             return Center(
               child: Padding(
                 padding:
@@ -126,16 +124,14 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
                     Text(
                       provider.errorMessage!,
-                      textAlign:
-                          TextAlign.center,
+                      textAlign: TextAlign.center,
                     ),
 
                     const SizedBox(height: 16),
 
                     ElevatedButton(
                       onPressed: () {
-                        provider
-                            .loadTransactions(
+                        provider.loadTransactions(
                           page: 1,
                           limit: 5,
                         );
@@ -195,43 +191,42 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         Icons.logout,
                       ),
                       onPressed: () async {
-  final shouldLogout = await showDialog<bool>(
-    context: context,
-    builder: (dialogContext) {
-      return AlertDialog(
-        title: const Text('Logout'),
-        content: const Text(
-          'Are you sure you want to logout?',
-        ),
-        actions: [
-          TextButton(
-            onPressed: () {
-              Navigator.pop(dialogContext, false);
-            },
-            child: const Text('Cancel'),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              Navigator.pop(dialogContext, true);
-            },
-            child: const Text('Logout'),
-          ),
-        ],
-      );
-    },
-  );
+                        final shouldLogout = await showDialog<bool>(
+                          context: context,
+                          builder: (dialogContext) {
+                            return AlertDialog(
+                              title: const Text('Logout'),
+                              content: const Text(
+                                'Are you sure you want to logout?',
+                              ),
+                              actions: [
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.pop(dialogContext, false);
+                                  },
+                                  child: const Text('Cancel'),
+                                ),
+                                ElevatedButton(
+                                  onPressed: () {
+                                    Navigator.pop(dialogContext, true);
+                                  },
+                                  child: const Text('Logout'),
+                                ),
+                              ],
+                            );
+                          },
+                        );
 
-  if (!mounted) return;
+                        if (!mounted) return;
 
-  if (shouldLogout != true) {
-    return;
-  }
+                        if (shouldLogout != true) {
+                          return;
+                        }
 
-  final authProvider = context.read<AuthProvider>();
+                        final authProvider = context.read<AuthProvider>();
+                        await authProvider.logout();
 
-  await authProvider.logout();
-
-},
+                      },
                     ),
                   ],
                 ),
@@ -265,11 +260,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
                         const Text(
                           'Overview',
-                          style:
-                              TextStyle(
+                          style: TextStyle(
                             fontSize: 28,
-                            fontWeight:
-                                FontWeight.bold,
+                            fontWeight: FontWeight.bold,
                           ),
                         ),
 
@@ -279,11 +272,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
                         Text(
                           'Track your income and expenses',
-                          style:
-                              TextStyle(
-                            color:
-                                Colors.grey
-                                    .shade600,
+                          style: TextStyle(
+                            color: Colors.grey.shade600,
                           ),
                         ),
 
@@ -295,12 +285,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
                         GridView(
                           shrinkWrap: true,
-
-                          physics:
-                              const NeverScrollableScrollPhysics(),
-
-                          gridDelegate:
-                              const SliverGridDelegateWithFixedCrossAxisCount(
+                          physics: const NeverScrollableScrollPhysics(),
+                          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                             crossAxisCount: 2,
                             mainAxisExtent: 155,
                             crossAxisSpacing: 12,
@@ -309,59 +295,24 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
                           children: [
                             SummaryCard(
-                              title:
-                                  'Total Income',
-
-                              amount:
-                                  provider
-                                      .summary
-                                      .income,
-
-                              icon:
-                                  Icons
-                                      .arrow_downward_rounded,
-
-                              color:
-                                  Colors.green,
+                              title: 'Total Income',
+                              amount: provider.summary.income,
+                              icon: Icons.arrow_downward_rounded,
+                              color: Colors.green,
                             ),
 
                             SummaryCard(
-                              title:
-                                  'Total Expense',
-
-                              amount:
-                                  provider
-                                      .summary
-                                      .expense,
-
-                              icon:
-                                  Icons
-                                      .arrow_upward_rounded,
-
-                              color:
-                                  Colors.red,
+                              title: 'Total Expense',
+                              amount: provider.summary.expense,
+                              icon: Icons.arrow_upward_rounded,
+                              color: Colors.red,
                             ),
 
                             SummaryCard(
-                              title:
-                                  'Balance',
-
-                              amount:
-                                  provider
-                                      .summary
-                                      .balance,
-
-                              icon:
-                                  Icons
-                                      .account_balance_wallet_outlined,
-
-                              color:
-                                  provider
-                                          .summary
-                                          .balance >=
-                                      0
-                                  ? Colors.blue
-                                  : Colors.red,
+                              title: 'Balance',
+                              amount: provider.summary.balance,
+                              icon: Icons.account_balance_wallet_outlined,
+                              color: provider.summary.balance >= 0 ? Colors.blue : Colors.red,
                             ),
                           ],
                         ),
@@ -421,13 +372,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
                             const Text(
                               'Recent Transactions',
 
-                              style:
-                                  TextStyle(
-                                fontSize:
-                                    20,
-
-                                fontWeight:
-                                    FontWeight.bold,
+                              style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
                               ),
                             ),
 
@@ -453,9 +400,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                           height: 10,
                         ),
 
-                        if (provider
-                            .transactions
-                            .isEmpty)
+                        if (provider.transactions.isEmpty)
                           const Center(
                             child:
                                 Padding(
@@ -471,9 +416,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                 ),
                           )
                         else
-                          ...provider
-                              .transactions
-                              .map(
+                          ...provider.transactions.map(
                             (transaction) {
                               return TransactionCard(
                                 transaction: transaction,
