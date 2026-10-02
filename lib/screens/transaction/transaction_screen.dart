@@ -8,6 +8,7 @@ import 'transaction_form_screen.dart';
 import '../../models/transaction_model.dart';
 import '../../services/transaction_api_service.dart';
 import '../../utils/csv_export.dart';
+import '../../widgets/banner_ad.dart';
 
 class TransactionScreen extends StatefulWidget {
   const TransactionScreen({
@@ -683,11 +684,21 @@ class _TransactionScreenState extends State<TransactionScreen> {
                         ),
 
                       ],
+                      // =========================
+                      // BANNER AD
+                      // =========================
+
+                      const SizedBox(height: 20),
+
+                      const Center(
+                        child: BannerAdWidget(),
+                      ),
+
+                      const SizedBox(height: 20),
                   ],
                 
               ],
             ),
-            
             
 
           );

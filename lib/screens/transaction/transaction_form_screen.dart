@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 
 import '../../models/transaction_model.dart';
 import '../../providers/transaction_provider.dart';
+import '../../widgets/banner_ad.dart';
 
 class TransactionFormScreen extends StatefulWidget {
     final TransactionModel? transaction;
@@ -158,9 +159,7 @@ if (success) {
   ScaffoldMessenger.of(context).showSnackBar(
     SnackBar(
       content: Text(
-        widget.isEditing
-            ? 'Transaction updated successfully.'
-            : 'Transaction added successfully.',
+        widget.isEditing ? 'Transaction updated successfully.' : 'Transaction added successfully.',
       ),
     ),
   );
@@ -170,8 +169,7 @@ if (success) {
   ScaffoldMessenger.of(context).showSnackBar(
     SnackBar(
       content: Text(
-        provider.errorMessage ??
-            'Something went wrong.',
+        provider.errorMessage ?? 'Something went wrong.',
       ),
     ),
   );
@@ -188,9 +186,7 @@ final bool isEditing = widget.isEditing;
 return Scaffold(
   appBar: AppBar(
     title: Text(
-      isEditing
-          ? 'Edit Transaction'
-          : 'Add Transaction',
+      isEditing ? 'Edit Transaction' : 'Add Transaction',
     ),
   ),
 
@@ -202,8 +198,7 @@ return Scaffold(
         key: _formKey,
 
         child: Column(
-          crossAxisAlignment:
-              CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
 
           children: [
             // =========================
@@ -211,9 +206,7 @@ return Scaffold(
             // =========================
 
             Text(
-              isEditing
-                  ? 'Update Transaction'
-                  : 'New Transaction',
+              isEditing ? 'Update Transaction': 'New Transaction',
 
               style: const TextStyle(
                 fontSize: 26,
@@ -496,6 +489,15 @@ return Scaffold(
                     const Text('Cancel'),
               ),
             ),
+            // =========================
+            // BANNER AD
+            // =========================
+
+            const SizedBox(height: 24),
+            const Center(
+              child: BannerAdWidget(),
+            ),
+            const SizedBox(height: 24),
           ],
         ),
       ),

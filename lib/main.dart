@@ -1,18 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:provider/provider.dart';
 
 import 'providers/auth_provider.dart';
 
-import 'core/theme/app_theme.dart';
 import 'providers/transaction_provider.dart';
 import 'screens/dashboard/dashboard_screen.dart';
 import 'screens/transaction/transaction_screen.dart';
 import 'screens/auth_gate.dart';
 
-void main() {
-  runApp(
-    const ExpenseManagerApp(),
-  );
+void main() async{
+    
+    WidgetsFlutterBinding.ensureInitialized();
+    await MobileAds.instance.initialize();
+
+    runApp(const ExpenseManagerApp(),);
 }
 
 class ExpenseManagerApp extends StatelessWidget {
@@ -21,18 +23,7 @@ class ExpenseManagerApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context,) {
-    /*
-    return ChangeNotifierProvider(
-      create: (_) => TransactionProvider(),
 
-      child: MaterialApp(
-              debugShowCheckedModeBanner: false,
-              title: 'Expense Manager',
-              theme: AppTheme.lightTheme,
-              home: const MainNavigation(),
-            ),
-    );
-    */
     return MultiProvider(
         providers:[
             ChangeNotifierProvider(create: (_)=>AuthProvider(),),

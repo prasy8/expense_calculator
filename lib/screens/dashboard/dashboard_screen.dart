@@ -12,6 +12,7 @@ import '../transaction/transaction_form_screen.dart';
 import '../transaction/transaction_screen.dart';
 
 import '../../models/transaction_model.dart';
+import '../../widgets/banner_ad.dart';
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({
@@ -90,6 +91,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Consumer<TransactionProvider>(
+        
         builder:
             (
               context,
@@ -112,7 +114,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 child: Column(
                   mainAxisSize:
                       MainAxisSize.min,
-
+                  
                   children: [
                     const Icon(
                       Icons.error_outline,
@@ -511,6 +513,20 @@ class _DashboardScreenState extends State<DashboardScreen> {
                           height: 30,
                         ),
                       ],
+                    ),
+                  ),
+                ),
+                // =========================
+                // ADMOB BANNER
+                // =========================
+
+                const SliverToBoxAdapter(
+                  child: Padding(
+                    padding: EdgeInsets.only(
+                      bottom: 16,
+                    ),
+                    child: Center(
+                      child: BannerAdWidget(),
                     ),
                   ),
                 ),
